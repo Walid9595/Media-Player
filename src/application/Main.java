@@ -16,8 +16,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		HBox hbox = new HBox();
 		
-		primaryStage.getIcons().add(new Image("file:logo1.png"));
-		
+		primaryStage.getIcons().add(new Image("file:logo.png"));		
 		Scene scene = new Scene(hbox);
 		primaryStage.setTitle("MediaPlayer");
 		primaryStage.setScene(scene);
