@@ -1,1 +1,8 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.toggle-button {
+  -fx-graphic: playpauseButton("icons/pause.png");
+}
+
+.toggle-button:selected {
+  -fx-graphic: playpauseButton("icons/play.png");
+}   
