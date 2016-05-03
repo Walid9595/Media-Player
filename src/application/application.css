@@ -6,6 +6,13 @@
     -fx-background-color: linear-gradient(#FFFFFF 0%, white 50%);    
    
 }
+#bpane{
+	-fx-background-color:azure ;
+}
+#bar
+{
+-fx-background-color:azure ;	
+}
 .button {
 -fx-background-color: white;
 }
@@ -19,14 +26,19 @@
     -fx-background-color: white;
     -fx-background-size:200% ;
 }
-.slider{
-	
-}
+
 .button:pressed, .button:default:hover:pressed {
   -fx-background-color: white;
   -fx-text-fill: #1d1d1d;
 }
 .tooltip{
 	-fx-background-radius:2 2 2 2;
-	 -fx-background-color:rgb(255,128,64);
+	 -fx-background-color:rgb(128,128,255) ;
+	 -fx-text-fill:white ;
+}
+#Tracks:hover ,pressed{
+	-fx-text-fill: rgb(0,128,255);
+}
+#Time:hover ,pressed{
+	-fx-text-fill: rgb(0,128,255);
 }

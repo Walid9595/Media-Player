@@ -1,17 +1,12 @@
 package application;
 
-import java.io.File;
-
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
-import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
 public class Keyboard extends Button_Builder{
@@ -22,8 +17,7 @@ public class Keyboard extends Button_Builder{
 	public void volum1(KeyEvent e,Slider volumeSlider,MediaPlayer mediaPlayer ) {
 try{
 		if(e.getCode().equals(KeyCode.UP) || e.getCode().equals(KeyCode.KP_UP))
-				{
-			
+				{			
 			volumeSlider.setValue(volumeSlider.getValue()+0.01);
 			mediaPlayer.setVolume(volumeSlider.getValue()+0.01);
 			
@@ -51,17 +45,35 @@ public void volum2(MouseEvent e,Slider volumeSlider,MediaPlayer mediaPlayer)
 		if(volumeSlider.getValue()==0)
 mediaPlayer.setVolume(0.0);
 else if (e.isDragDetect())
-{volumeSlider.setValue(volumeSlider.getValue()-0.01);
-mediaPlayer.setVolume(volumeSlider.getValue()-0.01);}
+{
+	volumeSlider.setValue(volumeSlider.getValue()-0.01);
+    mediaPlayer.setVolume(volumeSlider.getValue()-0.01);}
 else 
-{volumeSlider.setValue(volumeSlider.getValue()+0.01);	
-mediaPlayer.setVolume(volumeSlider.getValue()+0.01);
+{
+	volumeSlider.setValue(volumeSlider.getValue()+0.01);	
+    mediaPlayer.setVolume(volumeSlider.getValue()+0.01);
 }
 	}
 	catch(NullPointerException ex)
 	{
-	System.out.println("No File is open");	
+	//System.out.println("No File is open");	
 	}
+	}
+public void dragPosition(MouseEvent e,Slider slider,MediaPlayer mediaPlayer)
+{		
+    if (e.isDragDetect())
+{
+	slider.setValue(slider.getValue()-0.01);
+	Duration du = mediaPlayer.getCurrentTime();
+    mediaPlayer.seek(du.subtract(new Duration(0.01)));
+    }
+else 
+{
+	slider.setValue(slider.getValue()+0.01);	
+	Duration du = mediaPlayer.getCurrentTime();
+    mediaPlayer.seek(du.add(new Duration(0.01)));
+}
+	
 	}
 public void seek(KeyEvent key , MediaPlayer mediaPlayer)
 {

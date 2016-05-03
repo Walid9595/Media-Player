@@ -1,12 +1,8 @@
 package application;
 
 import java.io.File;
-import java.util.ArrayList;
 
-import javafx.collections.MapChangeListener;
-import javafx.collections.MapChangeListener.Change;
 import javafx.event.ActionEvent;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -16,31 +12,34 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
-public class Button_Builder extends Main{
-FileChooser fileChooser = new FileChooser();  //create a fileChooser object to open a window to select the file			
-	String path = "";
-	/*MediaPlayer mediaPlayer ;*/
-	Media media;
-	boolean b=false;
-	Main m = new Main();
-	String name;
+public class Button_Builder {
+    private final FileChooser fileChooser = new FileChooser();  //create a fileChooser object to open a window to select the file			
+	private String path = "";
+	private Media media;
+	private String name;
 	public Button_Builder()
 	{
 		
 	}
-	HBox hbox = new HBox();
 	//create the play image and imageView 
+	/**
+	 * @return play ImageView
+	 */
 	public ImageView playView()
 	{
 		File file1 = new File("icons/play.png");
 		Image playButtonImage = new Image(file1.toURI().toString());
 		ImageView playView = new ImageView(playButtonImage);
-		playView.setFitWidth(40);
-		playView.setFitHeight(40);
+		//playView.setFitWidth(35);
+		//playView.setFitHeight(35);
 		return playView;
 	}
 			
+			/**
+			 * @return pause ImageView
+			 */
 			public ImageView pauseView()
 			{
 				//create the pause image and imageView
@@ -50,6 +49,9 @@ FileChooser fileChooser = new FileChooser();  //create a fileChooser object to o
 				return pauseView;
 			}
 			
+			/**
+			 * @return forward ImageView
+			 */
 			public ImageView forwardView()
 			{
 				File file3 = new File("icons/right.png");
@@ -58,6 +60,9 @@ FileChooser fileChooser = new FileChooser();  //create a fileChooser object to o
 				return forwardView;
 			}
 			
+			/**
+			 * @return backward ImageView
+			 */
 			public ImageView backwardView()
 			{
 				File file4 = new File("icons/left.png");
@@ -66,6 +71,9 @@ FileChooser fileChooser = new FileChooser();  //create a fileChooser object to o
 				return backwardView;
 			}
 			
+			/**
+			 * @return stop ImageView
+			 */
 			public ImageView stopView()
 			{
 				File file5 = new File("icons/stop.png");
@@ -74,6 +82,9 @@ FileChooser fileChooser = new FileChooser();  //create a fileChooser object to o
 				return stopView;
 			}
 			
+			/**
+			 * @return reload ImageView
+			 */
 			public ImageView reloadView()
 			{
 				File file7 = new File("icons/repeat.png");
@@ -82,15 +93,20 @@ FileChooser fileChooser = new FileChooser();  //create a fileChooser object to o
 				return reloadView;
 			}
 			
-			public ImageView shulffView()
+			/**
+			 * @return random imageView
+			 */
+			public ImageView randomView()
 			{
 				File file7 = new File("icons/shulff.png");
-				Image shulffButtonImage = new Image(file7.toURI().toString());
-				ImageView shulff = new ImageView(shulffButtonImage);
-				return shulff;
+				Image randomButtonImage = new Image(file7.toURI().toString());
+				ImageView random = new ImageView(randomButtonImage);
+				return random;
 			}
 			
-			//Create the buttons control 
+			/**
+			 * @return forward Button
+			 */
 			public Button forwardButton()
 			{
 				Button forwardButton = new Button();  //create the forward button
@@ -101,6 +117,9 @@ FileChooser fileChooser = new FileChooser();  //create a fileChooser object to o
 			    return forwardButton;
 			}
 			
+			/**
+			 * @return backward Button
+			 */
 			public Button backwardButton()
 			{
 				 Button backwardButton = new Button();  //create the backward button
@@ -111,6 +130,9 @@ FileChooser fileChooser = new FileChooser();  //create a fileChooser object to o
 				    return backwardButton;
 			}
 			
+			/**
+			 * @return stop Button 
+			 */
 			public Button stopButton()
 			{
 				Button stopButton = new Button();  //create stop button
@@ -121,6 +143,9 @@ FileChooser fileChooser = new FileChooser();  //create a fileChooser object to o
 			    return stopButton;
 			}
 			
+			/**
+			 * @return reload Button
+			 */
 			public Button reloadButton()
 			{
 				Button reloadButton = new Button();  //create reload button
@@ -131,16 +156,22 @@ FileChooser fileChooser = new FileChooser();  //create a fileChooser object to o
 			    return reloadButton;
 			}
 			
-			public Button shulffButton()
+			/**
+			 * @return random Button
+			 */
+			public Button randomButton()
 			{
 				Button shulff = new Button();  //create reload button
 				shulff.setPrefWidth(30);
 				shulff.setPrefHeight(30);
-			    shulff.setGraphic(shulffView());
-			    shulff.setTooltip(new Tooltip("Shuffle on/off"));
+			    shulff.setGraphic(randomView());
+			    shulff.setTooltip(new Tooltip("Random File"));
 			    return shulff;
 			}
 			
+			/**
+			 * @return playPause Button
+			 */
 			public Button playPause()
 			{
 				Button playpauseButton = new Button();  //create the play&pause button
@@ -151,6 +182,9 @@ FileChooser fileChooser = new FileChooser();  //create a fileChooser object to o
 				return playpauseButton;				
 			}
 			
+			/**
+			 * @return open Button
+			 */
 			public Button open()
 			{
 				File file3 = new File("icons/open.png");
@@ -166,12 +200,19 @@ FileChooser fileChooser = new FileChooser();  //create a fileChooser object to o
 				return open;
 			}
 			//create the buttons events
+			
+			/**
+			 * @param mediaPlayer
+			 * @param b
+			 */
 			public void playPauseEvent(MediaPlayer mediaPlayer,Button b)
 			{
-				 //if the media status is stopped or paused start it and change the button graphic
+								 //if the media status is stopped or paused start it and change the button graphic
 				if(mediaPlayer.getStatus().equals(Status.PLAYING)||mediaPlayer.getStatus().equals(Status.READY))
 				{
+				
 				          mediaPlayer.pause();
+				          
 				         //playView.setImage(pauseButtonImage);
 				          b.setGraphic(playView());		          
 				}
@@ -185,77 +226,82 @@ FileChooser fileChooser = new FileChooser();  //create a fileChooser object to o
 				b.setGraphic(pauseView());
 			}
 			}	
-			public MediaPlayer playMultiple(Media m , MediaPlayer mediaPlayer)
-			{				
-					
-				
-				mediaPlayer = new MediaPlayer(m);    //set the media object to a mediaPllayer object				   
-				mediaPlayer.setAutoPlay(true);	         //set autoPlay to true	
-				
-				return mediaPlayer;
-			}
+			/**
+			 * @param e
+			 * @param mediaPlayer
+			 * @return mediaPlayer
+			 */
 			public MediaPlayer openFile(ActionEvent e ,MediaPlayer mediaPlayer)
 			{
 				fileChooser.setTitle("Open File");
-			if(b)
-			{			
-				System.out.println("Error ");
-				//System.exit(0);
-				
+				fileChooser.getExtensionFilters().add(new ExtensionFilter("Media Files","*.mp3"));
 				File file = fileChooser.showOpenDialog(null);     //open an dialog to choose from	 
-				
+				if (mediaPlayer != null) {
+		            mediaPlayer.stop();
+		        }
 				path = file.getAbsolutePath();                      //get the path of the selected file                                                       
 				path = path.replace("\\","/");	                           //adapt the path to java rules	                                                         
 				
+				name = file.getName();
+				
 				media = new Media(new File(path).toURI().toString());      //create a media object
 				
-				mediaPlayer.stop();
 			    mediaPlayer = new MediaPlayer(media);    //set the media object to a mediaPllayer object
 			   
 				mediaPlayer.setAutoPlay(true);	         //set autoPlay to true	
-			}
-			else{
-			File file = fileChooser.showOpenDialog(null);     //open an dialog to choose from	 
 			
-			path = file.getAbsolutePath();                      //get the path of the selected file                                                       
-			path = path.replace("\\","/");	                           //adapt the path to java rules	                                                         
-			name = file.getName();
-			media = new Media(new File(path).toURI().toString());      //create a media object
-			
-		    mediaPlayer = new MediaPlayer(media);    //set the media object to a mediaPllayer object
-		    
-			mediaPlayer.setAutoPlay(true);	         //set autoPlay to true		
-						
-			b=true;
-			}
 			return mediaPlayer;
 			}
+			
+			/**
+			 * @return media
+			 */
 			public Media getMedia()
 			{
 				return media;
 			}
 			
-			public String getMediaName()
+			/**
+			 * @param mediaPlayer
+			 * @return
+			 */
+			public String getMediaName(MediaPlayer mediaPlayer)
 			{
-				return name; 
+				return new File(mediaPlayer.getMedia().getSource()).getName().replace("%20", " ").replace(".mp3", ""); 
 			}
+			/**
+			 * @param e
+			 * @param m
+			 */
 			public void forwardEvent(ActionEvent e ,MediaPlayer m)
 			{				
 				m.seek(m.getCurrentTime().multiply(1.2));				
 			}
+			/**
+			 * @param e
+			 * @param m
+			 */
 			public void backwardEvent(ActionEvent e,MediaPlayer m)
 			{
 				m.seek(m.getCurrentTime().divide(1.2));
 			}
+			/**
+			 * @param e
+			 * @param m
+			 */
 			public void stopEvent(ActionEvent e ,MediaPlayer m)
 			{
 				m.seek(m.getTotalDuration());
 				m.stop();				
 			}
+			/**
+			 * @param e
+			 * @param m
+			 */
 			public void repeatEvent(ActionEvent e ,MediaPlayer m )
 			{
 				
-						positionSlider.setValue(0);
+						Main.positionSlider.setValue(0);
 						m.seek(m.getStartTime());						
 				    
 			}
