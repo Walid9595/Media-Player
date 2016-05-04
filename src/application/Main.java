@@ -7,6 +7,7 @@ package application;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JOptionPane;
 
@@ -35,7 +36,9 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 /**
  * @author Walid
@@ -85,8 +88,8 @@ public class Main extends Application
 	boolean timeFlag = true;
 	boolean trackFlag;
 	private File file;
-	
-	
+	String hms;
+	long millis;
 	/* (non-Javadoc)
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
 	 */
@@ -112,19 +115,26 @@ public class Main extends Application
 		item1.setOnAction(e->{
 			try{
 				songs=0;
-				songs = playList.size();
-				mediaPlayer = buttons.openFile(e,mediaPlayer);
-				media = buttons.getMedia();				
-				MediaView mediaView = new MediaView(mediaPlayer); //set the mediaPlayer object to a mediaView object
-				hbox1.getChildren().add(mediaView); //add the media view object to the hbox		
-				listView.getItems().clear();
-				sldb = new TimeSlider_builder();                                    //set the mediaPlayer object to a mediaView object
-				listView.getItems().add(buttons.getMediaName(mediaPlayer));
+				millis = 0;
+				chooseFile();	
+				for(i=0;i<playList.size();i++)
+				{
+				songs++;
+				Media m = new Media(new File(playList.get(i)).toURI().toString());
+				MediaPlayer mp = new MediaPlayer(m);
+				 mp.setOnReady(new Runnable() {			
+					@Override
+					public void run() 
+					{
+						// TODO Auto-generated method stub
+						 millis += (long) m.getDuration().toMillis();
+						 hms = TimeConv(millis);
+					}
+				});
+				}
 				playpauseButton.setGraphic(buttons.pauseView());
 				label.setText(buttons.getMediaName(mediaPlayer));
-				sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work  
-				TTime += mediaPlayer.getTotalDuration().toHours();
-				songs++;
+				sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
 				Tracks.setText("Tracks : "+songs);
 				}
 				catch(NullPointerException ex)
@@ -136,11 +146,24 @@ public class Main extends Application
 		item2.setOnAction(e->{	
 			try{
 				songs=0;
+				millis = 0;
 				chooseDirec();
 				for(i=0;i<playList.size();i++)
-				{
+					{
 					songs++;
-				}
+					Media m = new Media(new File(playList.get(i)).toURI().toString());
+					MediaPlayer mp = new MediaPlayer(m);
+					 mp.setOnReady(new Runnable() {			
+						@Override
+						public void run() 
+						{
+							// TODO Auto-generated method stub
+							 millis += (long) m.getDuration().toMillis();
+							 hms = TimeConv(millis);
+						}
+					});
+					}
+										
 				Tracks.setText("Tracks : "+(songs));
 			   }
 			
@@ -166,7 +189,7 @@ public class Main extends Application
 				
 			}
 		});	
-		
+
 listView.setOnMouseClicked(e->{
 			
 			count = listView.getSelectionModel().getSelectedIndex();			
@@ -258,22 +281,23 @@ listView.setOnKeyPressed(e->{
 		{			
 			try{
 				songs=0;
-				mediaPlayer = buttons.openFile(e,mediaPlayer);
-				media = buttons.getMedia();				
-				MediaView mediaView = new MediaView(mediaPlayer); //set the mediaPlayer object to a mediaView object
-				hbox1.getChildren().add(mediaView); //add the media view object to the hbox		
-				listView.getItems().clear();
-				if(mediaPlayer!=null)
+				millis = 0;
+				chooseFile();	
+				for(i=0;i<playList.size();i++)
 				{
-					playList = null;
-		            playList = new ArrayList<String>();
+				songs++;
+				Media m = new Media(new File(playList.get(i)).toURI().toString());
+				MediaPlayer mp = new MediaPlayer(m);
+				 mp.setOnReady(new Runnable() {			
+					@Override
+					public void run() 
+					{
+						// TODO Auto-generated method stub
+						 millis += (long) m.getDuration().toMillis();
+						 hms = TimeConv(millis);
+					}
+				});
 				}
-				sldb = new TimeSlider_builder();                                    //set the mediaPlayer object to a mediaView object
-				listView.getItems().add(buttons.getMediaName(mediaPlayer));
-								
-					TTime += mediaPlayer.getTotalDuration().toHours();
-					songs++;
-				
 				playpauseButton.setGraphic(buttons.pauseView());
 				label.setText(buttons.getMediaName(mediaPlayer));
 				sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
@@ -304,16 +328,28 @@ listView.setOnKeyPressed(e->{
 				else
 				{
 					try{				
-						mediaPlayer = buttons.openFile(e,mediaPlayer);
-						media = buttons.getMedia();			
-						MediaView mediaView = new MediaView(mediaPlayer); //set the mediaPlayer object to a mediaView object
-						hbox1.getChildren().add(mediaView); //add the media view object to the hbox		
-						listView.getItems().clear();
-						sldb = new TimeSlider_builder();                                    //set the mediaPlayer object to a mediaView object
-						listView.getItems().add(buttons.getMediaName(mediaPlayer));
+						songs=0;
+						millis = 0;
+						chooseFile();	
+						for(i=0;i<playList.size();i++)
+						{
+						songs++;
+						Media m = new Media(new File(playList.get(i)).toURI().toString());
+						MediaPlayer mp = new MediaPlayer(m);
+						 mp.setOnReady(new Runnable() {			
+							@Override
+							public void run() 
+							{
+								// TODO Auto-generated method stub
+								 millis += (long) m.getDuration().toMillis();
+								 hms = TimeConv(millis);
+							}
+						});
+						}
 						playpauseButton.setGraphic(buttons.pauseView());
 						label.setText(buttons.getMediaName(mediaPlayer));
-						sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work           
+						sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
+						Tracks.setText("Tracks : "+songs);          
 						}
 							
 					
@@ -454,16 +490,13 @@ listView.setOnKeyPressed(e->{
 			}
 			else
 			{
-				Tracks.setText("Time : "+TTime);
+				Tracks.setText("Time : "+hms);
 				trackFlag = true;
 			}
 		});
 		
 		Tracks.setText("Tracks : "+songs);
-		//Time.setText("Time : "+TTime);
-		//Tracks.setStyle("");
 		Tracks.setId("Tracks");
-		//Time.setId("Time");
 		HBox hbox = TimeSlider_builder.initView();
 		BorderPane.setAlignment(hbox, Pos.CENTER);		
 		BorderPane bpane = new BorderPane();
@@ -475,15 +508,9 @@ listView.setOnKeyPressed(e->{
 		label.setId("label");
 		vbox1.getChildren().add(bar);		
 		vbox2.getChildren().add(label);
-		//BorderPane.setAlignment(Tracks,Pos.BASELINE_LEFT);
-		//Tracks.setAlignment(Pos.BASELINE_LEFT);
 		Tracks.setAlignment(Pos.CENTER);
 		Tracks.setMaxWidth(Double.MAX_VALUE);
-		//BorderPane.setAlignment(Time,Pos.CENTER_RIGHT);
-		
-		//hbox2.getChildren().add(Tracks);
-		
-		//vbox2.getChildren().add(hbox2);
+	
 		vbox2.getChildren().add(Tracks);
 		vbox2.getChildren().addAll(hbox,hbox1);
 		bpane.setId("bpane");
@@ -540,6 +567,59 @@ positionSlider.setOnMouseDragged(e->
 		primaryStage.setScene(scene);       //set the scene to the stage
 		
 		primaryStage.show();                //show the stage
+		
+	}
+	public static String TimeConv(long milliseconds) {
+        String format = String.format("%%0%dd", 2);
+        long elapsedTime = milliseconds / 1000;
+        String seconds = String.format(format, elapsedTime % 60);
+        String minutes = String.format(format, (elapsedTime % 3600) / 60);
+        String hours = String.format(format, elapsedTime / 3600);
+        String time =  hours + ":" + minutes + ":" + seconds;
+        return time;
+    }
+	public void chooseFile()
+	{
+		FileChooser fileChooser = new FileChooser();
+		try{
+		 fileChooser.setTitle("Open File");
+		 fileChooser.getExtensionFilters().add(new ExtensionFilter("Media Files","*.mp3"));
+		File file = fileChooser.showOpenDialog(null);     //open an dialog to choose from	 
+		if (mediaPlayer != null) 
+	    {
+            mediaPlayer.stop();
+            playList = null;
+            playList = new ArrayList<String>();          
+        }
+		sldb = new TimeSlider_builder();
+		listView.getItems().clear();
+		getFile(file);
+		if(playList.size()>0)
+		{			
+		path = playList.get(0);  			
+		media = new Media(new File(path).toURI().toString());
+        mediaPlayer = new MediaPlayer(media);
+        //mediaPlayer.play();
+        mediaPlayer.setAutoPlay(true);	         //set autoPlay to true	
+        playpauseButton.setGraphic(buttons.pauseView());
+        label.setText(buttons.getMediaName(mediaPlayer));
+        sldb = new TimeSlider_builder();  
+        sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
+        
+		}
+		else
+			 throw new IndexOutOfBoundsException("IndexOutOfBoundsException");
+		}
+		catch(NullPointerException ex)
+		{
+			if(mediaPlayer!=null)
+			{
+				mediaPlayer.stop();
+			}
+			label.setText("WMA Player");
+			playpauseButton.setGraphic(buttons.playView());
+			mediaPlayer=null;
+		}
 		
 	}
 	/**
@@ -607,6 +687,22 @@ positionSlider.setOnMouseDragged(e->
 			playpauseButton.setGraphic(buttons.playView());
 			mediaPlayer=null;
 		}
+	}
+	public void getFile(File root)
+	{
+		
+		 if(root.isFile())
+			{
+				path = root.getAbsolutePath();
+			if(path.endsWith(".mp3"))
+				{										
+				 listView.getItems().add(root.getName());
+				 playList.add(path);				 
+				}
+			}
+			
+			
+			
 	}
 	/**
 	 * @param File root

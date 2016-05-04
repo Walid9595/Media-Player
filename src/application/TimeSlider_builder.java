@@ -1,5 +1,7 @@
 package application;
 
+import java.io.File;
+
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -16,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
@@ -67,11 +70,7 @@ public class  TimeSlider_builder {
 			}
 			}
 			}
-//	public static int Time(Duration duration) {
-//			int intElapsed = (int) duration.toSeconds();
-//			int elapsedHours = intElapsed / (60 * 60);
-//			return elapsedHours;
-//			}
+	
 	public  void update(MediaPlayer mediaPlayer,Slider positionSlider,Label currentTimeLabel ){
 			if (currentTimeLabel != null ) {
 			Platform.runLater(new Runnable() {

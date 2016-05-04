@@ -226,32 +226,6 @@ public class Button_Builder {
 				b.setGraphic(pauseView());
 			}
 			}	
-			/**
-			 * @param e
-			 * @param mediaPlayer
-			 * @return mediaPlayer
-			 */
-			public MediaPlayer openFile(ActionEvent e ,MediaPlayer mediaPlayer)
-			{
-				fileChooser.setTitle("Open File");
-				fileChooser.getExtensionFilters().add(new ExtensionFilter("Media Files","*.mp3"));
-				File file = fileChooser.showOpenDialog(null);     //open an dialog to choose from	 
-				if (mediaPlayer != null) {
-		            mediaPlayer.stop();
-		        }
-				path = file.getAbsolutePath();                      //get the path of the selected file                                                       
-				path = path.replace("\\","/");	                           //adapt the path to java rules	                                                         
-				
-				name = file.getName();
-				
-				media = new Media(new File(path).toURI().toString());      //create a media object
-				
-			    mediaPlayer = new MediaPlayer(media);    //set the media object to a mediaPllayer object
-			   
-				mediaPlayer.setAutoPlay(true);	         //set autoPlay to true	
-			
-			return mediaPlayer;
-			}
 			
 			/**
 			 * @return media
