@@ -7,14 +7,10 @@ package application;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.JOptionPane;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -34,83 +30,204 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.util.Duration;
+import javafx.stage.Stage;
+import javafx.util.Duration; 
 /**
- * @author Walid
- *
- */
+* @authors 
+* 1-Walid Mohammed Ali Mohammed
+* 2-Moustafa Abu El Wafa Moustafa
+* 3-Ahmed Bahy Edin Mohammed
+* 4-Walid Mohammed Osman 
+*/
 public class Main extends Application
-{ 
-	private TimeSlider_builder sldb;
-	private final Button_Builder buttons = new Button_Builder();
-	private final Keyboard keyboard = new Keyboard();
-    private  Scene scene;
-    Label label = new Label("WMA Player");
-    private final Random random = new Random();
-	private String path="";
-	 static Label currentTimeLabel; 
-	 static Slider volumeSlider ;
-	static Slider positionSlider;
-	private  Media media;
-	static MediaPlayer mediaPlayer ;
-	private ListView<String>listView = new ListView<String>();
-    private  ArrayList<String>playList = new ArrayList<String>();
-    private  MediaPlayer mp;
+{
+/**
+ * TSB object of TimeSlider_builder class to access its method 
+ * and set some Actions of The sliders 
+ */
+
+private TimeSlider_builder TSB;
+/**
+ * buttons is an object of Button_Builder class to access its methods 
+ * and initiate all the buttons in the scene 
+ */
+private final Button_Builder buttons = new Button_Builder();
+/**
+ * keyboard is an object of Keyboard class to access its methods 
+ * which care about handling the action of pressed keyboard key  
+ */
+private final Keyboard keyboard = new Keyboard();
+/**
+* scene is the window that hold all nodes 
+*/
+private  Scene scene;
+/**
+* label hold default value "WMA Player" in static case and
+*  hold the media name in the dynamic one 
+*/
+Label label = new Label("WMA Player");
+/**
+* random variable the helps to make the medias playing randomly 
+*/
+private final Random random = new Random();
+
+/** @Description xxxxxxxxxx
+ * path : hold the Path of the current media 
+ */
+private String path="";
+ /**
+ *  @Description xxxxxxxxxx
+ * currentTimeLabel : Label in the down-left side of the scene 
+ * that show the timer of the media duration 
+ */
+static Label currentTimeLabel; 
+ /**
+ * volumeSlider : Slider for Showing and changing the volume value 
+ */
+
+static Slider volumeSlider ;
+/**
+ * positionSlider : Slider for Showing and seeking the media timer
+ */
+static Slider positionSlider;
+/**
+ * media : is an object of the media class that is loaded by the media path
+ */
+private  Media media;
+/**
+ * mediaPlayer : is an object of the mediaplayer class that is loaded by the media object 
+ * holding the songe 
+ */
+static MediaPlayer mediaPlayer ;
+/**
+ * listView : list of name of the current medias 
+ */
+private ListView<String>listView = new ListView<String>();
+/**
+* playList : list that hold the pathes of the current medias
+*/
+private  ArrayList<String>playList = new ArrayList<String>();
+/**
+* mp : aux in playpause button 
+*/
+private  MediaPlayer mp;
+
+/**
+ * playpauseButton : object of button class that iniate a button for play/pause the current media
+ */
+private final Button playpauseButton = buttons.playPause();
+
+/**
+ *  forwardButton : object of button class that iniate a button for forward seek of the current media
+ */
+private final Button forwardButton = buttons.forwardButton();
+
+/**
+ * backwardButton : object of button class that iniate a button for back seek of the current media
+ */
+private final Button backwardButton = buttons.backwardButton();
+
+/**
+ * stopButton : object of button class that iniate a button for stoping the current media
+ */
+private final Button stopButton = buttons.stopButton();
+
+/**
+ *  randomButton : object of button class that iniate a button for random repeating
+ *  of the current media list
+ */
+private final Button randomButton = buttons.randomButton();
+
+/**
+ *  repeat : object of button class that iniate a button for repeating the current media 
+ */
+private final Button repeat = buttons.reloadButton();
+/**
+ * open : object of button class that iniate a button for opening a media
+ */
+private final Button open = buttons.open();
+/**
+ * get an image view on button (getting play.png image)
+ */
+private final ImageView playView = buttons.playView();
+/**
+ * hbox1 : pane that hold the medai names horozentally in shape of list
+ */
+private final HBox hbox1 = new HBox();
+
+HBox hbox;
+/**
+ * meneu : object of menu to set a drop down menu with two items folder and file chooser
+ */
+Menu menu = new Menu("File");
+/**
+ * item2 : menue item to choose a file of the  media
+ */
+MenuItem item1 = new MenuItem("Open File");
+/**
+ * item2 : menue item to choose a folder that holde more than one media 
+ */
+MenuItem item2 = new MenuItem("Open Folder");
+/**
+ * 
+ */
+MenuItem item3 = new MenuItem("Exit");
+
+ /**
+ * 
+ */
+
+ /**
+ * bar : MenuBar object that create bar that hold the menu
+ */
+MenuBar bar ;
+/**
+ * count : counter for playing list of songs 
+ */
+int count =0;
+private BorderPane bpane = new BorderPane();
+int j;
+int i;
+
+String song;
+int songs = 0;
+Label Tracks  = new Label();
+//Label Time = new Label();
+int TTime;
+boolean timeFlag = true;
+boolean trackFlag;
+private File file;
+String hms;
+long millis;
+ 
 	
-	private final Button playpauseButton = buttons.playPause();
-	
-	private final Button forwardButton = buttons.forwardButton();
-	
-	private final Button backwardButton = buttons.backwardButton();
-	
-	private final Button stopButton = buttons.stopButton();
-	
-	private final Button randomButton = buttons.randomButton();
-	
-	private final Button repeat = buttons.reloadButton();
-	private final Button open = buttons.open();
-	private final ImageView playView = buttons.playView();
-	private final HBox hbox1 = new HBox();
-	private final HBox hbox2 = new HBox();
-	int j;
-	int i;
-	int count =0;
-	String song;
-	int songs = 0;
-	Label Tracks  = new Label();
-	//Label Time = new Label();
-	int TTime;
-	boolean timeFlag = true;
-	boolean trackFlag;
-	private File file;
-	String hms;
-	long millis;
 	/* (non-Javadoc)
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
 	 */
 	@Override
 	public void start(Stage primaryStage) {
 		
-		Menu menu = new Menu("Open");
-		MenuItem item1 = new MenuItem("Open File");
-		MenuItem item2 = new MenuItem("Open Folder");
 	    menu.getItems().add(item1);
 	    menu.getItems().add(item2);
-	    MenuBar bar = new MenuBar(menu);	      
+	    menu.getItems().add(item3);
+	    	    
+	   
+	    
+	    
+	    bar = new MenuBar(menu);	      
+	    
 		
-		
-		//set the window icon
+	    hbox = TimeSlider_builder.initView();
 		primaryStage.getIcons().add(new Image("file:logo.png"));
 		hbox1.setMinWidth(100);
 		hbox1.setMaxWidth(Double.MAX_VALUE);
 		hbox1.getChildren().addAll(repeat,open,backwardButton,playpauseButton,forwardButton,stopButton,randomButton);			
 		hbox1.setAlignment(Pos.CENTER);       //align the hbox to the center		
 		//working on it but it does not work now
+				listView.setStyle("-fx-cell-hover-color:#0093ff; -fx-text-fill:black");
 		
 		item1.setOnAction(e->{
 			try{
@@ -134,7 +251,7 @@ public class Main extends Application
 				}
 				playpauseButton.setGraphic(buttons.pauseView());
 				label.setText(buttons.getMediaName(mediaPlayer));
-				sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
+				TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
 				Tracks.setText("Tracks : "+songs);
 				}
 				catch(NullPointerException ex)
@@ -189,6 +306,9 @@ public class Main extends Application
 				
 			}
 		});	
+item3.setOnAction(e->{
+	 System.exit(0);
+});
 
 listView.setOnMouseClicked(e->{
 			
@@ -197,15 +317,15 @@ listView.setOnMouseClicked(e->{
 						if(mediaPlayer!=null)
 							mediaPlayer.stop();
 				playpauseButton.setGraphic(buttons.pauseView());
-				sldb = new TimeSlider_builder();
+				TSB = new TimeSlider_builder();
 				path = playList.get(count);   			
 				media = new Media(new File(path).toURI().toString());
 		        mediaPlayer = new MediaPlayer(media);
 		        mediaPlayer.play();
 		       
 		        label.setText(buttons.getMediaName(mediaPlayer));
-		        sldb = new TimeSlider_builder();  
-	            sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
+		        TSB = new TimeSlider_builder();  
+	            TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
 			 mediaPlayer.setOnEndOfMedia(new Runnable() {			
 					@Override
 					public void run() {
@@ -216,7 +336,7 @@ listView.setOnMouseClicked(e->{
 				        mediaPlayer = new MediaPlayer(media);
 				        mediaPlayer.play();
 				        label.setText(buttons.getMediaName(mediaPlayer));
-				        sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
+				        TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
 				       
 				        label.setText(buttons.getMediaName(mediaPlayer));
 					}
@@ -242,15 +362,15 @@ listView.setOnKeyPressed(e->{
 					mediaPlayer.stop();
 				
 		playpauseButton.setGraphic(buttons.pauseView());
-		sldb = new TimeSlider_builder();
+		TSB = new TimeSlider_builder();
 		path = playList.get(count);   			
 		media = new Media(new File(path).toURI().toString());
-        mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
-       
-        label.setText(buttons.getMediaName(mediaPlayer));
-        sldb = new TimeSlider_builder();  
-        sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
+       mediaPlayer = new MediaPlayer(media);
+       mediaPlayer.play();
+      
+       label.setText(buttons.getMediaName(mediaPlayer));
+       TSB = new TimeSlider_builder();  
+       TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
 	 mediaPlayer.setOnEndOfMedia(new Runnable() {			
 			@Override
 			public void run() 
@@ -262,7 +382,7 @@ listView.setOnKeyPressed(e->{
 		        mediaPlayer = new MediaPlayer(media);
 		        mediaPlayer.play();
 		        label.setText(buttons.getMediaName(mediaPlayer));
-		        sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
+		        TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
 		       
 		        label.setText(buttons.getMediaName(mediaPlayer));
 			}
@@ -300,7 +420,7 @@ listView.setOnKeyPressed(e->{
 				}
 				playpauseButton.setGraphic(buttons.pauseView());
 				label.setText(buttons.getMediaName(mediaPlayer));
-				sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
+				TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
 				Tracks.setText("Tracks : "+songs);
 				}
 					
@@ -348,7 +468,7 @@ listView.setOnKeyPressed(e->{
 						}
 						playpauseButton.setGraphic(buttons.pauseView());
 						label.setText(buttons.getMediaName(mediaPlayer));
-						sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
+						TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
 						Tracks.setText("Tracks : "+songs);          
 						}
 							
@@ -374,10 +494,10 @@ listView.setOnKeyPressed(e->{
 			            label.setText(buttons.getMediaName(mediaPlayer));
 			            
 			            playpauseButton.setGraphic(buttons.pauseView());
-			            sldb = new TimeSlider_builder();  
-			            sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work			            
+			            TSB = new TimeSlider_builder();  
+			            TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work			            
 				}				 
-             			 mediaPlayer.setOnEndOfMedia(new Runnable() {			
+            			 mediaPlayer.setOnEndOfMedia(new Runnable() {			
 						@Override
 						public void run() {
 						// TODO Auto-generated method stub
@@ -387,7 +507,7 @@ listView.setOnKeyPressed(e->{
 							media = new Media(new File(path).toURI().toString());
 					        mediaPlayer = new MediaPlayer(media);
 					        mediaPlayer.play();
-					        sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work  
+					        TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work  
 							}
 							catch(Exception ex)
 							{
@@ -418,8 +538,8 @@ listView.setOnKeyPressed(e->{
 		            label.setText(buttons.getMediaName(mediaPlayer));
 		            
 		            playpauseButton.setGraphic(buttons.pauseView());
-		            sldb = new TimeSlider_builder();  
-		            sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 		            
+		            TSB = new TimeSlider_builder();  
+		            TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 		            
 			        }
 				 mediaPlayer.setOnEndOfMedia(new Runnable() {			
 						@Override
@@ -431,7 +551,7 @@ listView.setOnKeyPressed(e->{
 					        mediaPlayer = new MediaPlayer(media);
 					        
 					        mediaPlayer.play();
-					        sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work  
+					        TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work  
 						}
 					});
 				
@@ -472,9 +592,9 @@ listView.setOnKeyPressed(e->{
 	            mediaPlayer = new MediaPlayer(media);
 	            mediaPlayer.play();
 	            playpauseButton.setGraphic(buttons.pauseView());
-	            sldb = new TimeSlider_builder();  
+	            TSB = new TimeSlider_builder();  
 	            label.setText(buttons.getMediaName(mediaPlayer));
-	            sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work  
+	            TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work  
 				}
 				catch(NullPointerException exp)
 				{
@@ -495,11 +615,57 @@ listView.setOnKeyPressed(e->{
 			}
 		});
 		
+		volumeSlider.setOnDragDetected(e->{
+			try{
+			keyboard.volum2(e, volumeSlider, mediaPlayer);
+			}
+			catch(Exception ex)
+			{				
+			}
+		});
+		// Mouse Actions On Both Position And Volume Sliders 
+
+				positionSlider.setOnMouseClicked(e->		
+				{
+					try{
+						positionSlider.setValue(positionSlider.getValue());
+						Duration du = mediaPlayer.getCurrentTime();
+					    mediaPlayer.seek(du.subtract(new Duration(1)));
+						positionSlider.setOnMouseDragged(c->{
+							mediaPlayer.seek(mediaPlayer.getTotalDuration()
+					                .multiply(positionSlider.getValue()));
+							
+						});
+					}
+						catch(NullPointerException exp)
+						{
+							System.out.println("No File Is Open");
+						}
+				});
+				positionSlider.setOnKeyPressed(e->{
+					keyboard.seek(e, mediaPlayer);
+				});
+				positionSlider.setOnMousePressed(e->{
+					mediaPlayer.seek(mediaPlayer.getTotalDuration()
+			                .multiply(positionSlider.getValue()));
+					
+				});
+volumeSlider.setOnMouseDragged(e->{
+	
+	mediaPlayer.setVolume(volumeSlider.getValue());
+	
+});
+volumeSlider.setOnMouseDragged(e->{
+	
+	mediaPlayer.setVolume(volumeSlider.getValue());
+	
+});
+
 		Tracks.setText("Tracks : "+songs);
 		Tracks.setId("Tracks");
-		HBox hbox = TimeSlider_builder.initView();
+		
 		BorderPane.setAlignment(hbox, Pos.CENTER);		
-		BorderPane bpane = new BorderPane();
+		
 		VBox vbox1 = new VBox();
 		VBox vbox2 = new VBox();
 		
@@ -525,6 +691,13 @@ listView.setOnKeyPressed(e->{
 		primaryStage.setMinWidth(500);
 		//primaryStage.initStyle(StageStyle.UTILITY); //to hide the maximize and minimize button in the window
 		volumeSlider.setValue(volumeSlider.getMax());
+		
+		primaryStage.setTitle("WMA Player");//set the stage Title
+		initSceneDragAndDrop(scene);
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		primaryStage.setScene(scene);       //set the scene to the stage
+		
+		primaryStage.show();                //show the stage
 		scene.setOnKeyPressed(e->{
 			try{
 			keyboard.volum1(e, volumeSlider, mediaPlayer); 
@@ -532,42 +705,6 @@ listView.setOnKeyPressed(e->{
 			catch(Exception ex)
 			{}
 			});
-		volumeSlider.setOnDragDetected(e->{
-			try{
-			keyboard.volum2(e, volumeSlider, mediaPlayer);
-			}
-			catch(Exception ex)
-			{				
-			}
-		});
-	
-positionSlider.setOnKeyPressed(e->		
-		{
-			try{
-				keyboard.seek(e, mediaPlayer);
-			}
-				catch(NullPointerException exp)
-			{
-					System.out.println("No File Is Open");
-				}
-		});
-positionSlider.setOnMouseDragged(e->		
-{
-	try{
-		keyboard.dragPosition(e, positionSlider, mediaPlayer);
-	}
-		catch(NullPointerException exp)
-		{
-			System.out.println("No File Is Open");
-		}
-});
-		primaryStage.setTitle("WMA Player");//set the stage Title
-		initSceneDragAndDrop(scene);
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		primaryStage.setScene(scene);       //set the scene to the stage
-		
-		primaryStage.show();                //show the stage
-		
 	}
 	public static String TimeConv(long milliseconds) {
         String format = String.format("%%0%dd", 2);
@@ -591,7 +728,7 @@ positionSlider.setOnMouseDragged(e->
             playList = null;
             playList = new ArrayList<String>();          
         }
-		sldb = new TimeSlider_builder();
+		TSB = new TimeSlider_builder();
 		listView.getItems().clear();
 		getFile(file);
 		if(playList.size()>0)
@@ -603,8 +740,8 @@ positionSlider.setOnMouseDragged(e->
         mediaPlayer.setAutoPlay(true);	         //set autoPlay to true	
         playpauseButton.setGraphic(buttons.pauseView());
         label.setText(buttons.getMediaName(mediaPlayer));
-        sldb = new TimeSlider_builder();  
-        sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
+        TSB = new TimeSlider_builder();  
+        TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
         
 		}
 		else
@@ -640,7 +777,7 @@ positionSlider.setOnMouseDragged(e->
             
         }			 
 		
-		sldb = new TimeSlider_builder();
+		TSB = new TimeSlider_builder();
 		listView.getItems().clear();
 			getFiles(file);
 			count=0;
@@ -653,8 +790,8 @@ positionSlider.setOnMouseDragged(e->
 	        mediaPlayer.play();
 	        playpauseButton.setGraphic(buttons.pauseView());
 	        label.setText(buttons.getMediaName(mediaPlayer));
-	        sldb = new TimeSlider_builder();  
-            sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
+	        TSB = new TimeSlider_builder();  
+	        TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
 		 mediaPlayer.setOnEndOfMedia(new Runnable() {			
 				@Override
 				public void run() {
@@ -666,7 +803,7 @@ positionSlider.setOnMouseDragged(e->
 			        mediaPlayer = new MediaPlayer(media);
 			        mediaPlayer.play();
 			        label.setText(buttons.getMediaName(mediaPlayer));
-			        sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
+			        TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work 
 			       
 			        label.setText(buttons.getMediaName(mediaPlayer));
 				}
@@ -699,9 +836,7 @@ positionSlider.setOnMouseDragged(e->
 				 listView.getItems().add(root.getName());
 				 playList.add(path);				 
 				}
-			}
-			
-			
+			}			
 			
 	}
 	/**
@@ -743,7 +878,7 @@ positionSlider.setOnMouseDragged(e->
 				mediaPlayer.stop();
 			
 			listView.getItems().clear();
-			sldb = new TimeSlider_builder();  
+			TSB = new TimeSlider_builder();  
 		Dragboard db = event.getDragboard();
 		String url = null;
 
@@ -766,7 +901,7 @@ positionSlider.setOnMouseDragged(e->
 			mediaPlayer.play();
 			playpauseButton.setGraphic(buttons.pauseView());
 			label.setText(buttons.getMediaName(mediaPlayer));
-			sldb.update(mediaPlayer,positionSlider,currentTimeLabel);
+			TSB.update(mediaPlayer,positionSlider,currentTimeLabel);
 			
 			mediaPlayer.setOnEndOfMedia(new Runnable() {			
 				@Override
@@ -779,7 +914,7 @@ positionSlider.setOnMouseDragged(e->
 			        label.setText(buttons.getMediaName(mediaPlayer));
 			        mediaPlayer.play();
 			        playpauseButton.setGraphic(buttons.pauseView());
-			        sldb.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work  
+			        TSB.update(mediaPlayer,positionSlider,currentTimeLabel);//this is work  
 				}
 			});
 		}			

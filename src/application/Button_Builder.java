@@ -19,6 +19,13 @@ public class Button_Builder {
 	private String path = "";
 	private Media media;
 	private String name;
+	private ImageView playView;
+	private ImageView pauseView;
+	private ImageView forwardView;
+	private ImageView backwardView;
+	private ImageView stopView;
+	private ImageView reloadView;
+	private ImageView random;
 	public Button_Builder()
 	{
 		
@@ -31,7 +38,7 @@ public class Button_Builder {
 	{
 		File file1 = new File("icons/play.png");
 		Image playButtonImage = new Image(file1.toURI().toString());
-		ImageView playView = new ImageView(playButtonImage);
+		playView = new ImageView(playButtonImage);
 		//playView.setFitWidth(35);
 		//playView.setFitHeight(35);
 		return playView;
@@ -45,7 +52,7 @@ public class Button_Builder {
 				//create the pause image and imageView
 				File file2 = new File("icons/pause.png");
 				Image pauseButtonImage = new Image(file2.toURI().toString());
-				ImageView pauseView = new ImageView(pauseButtonImage);
+				pauseView = new ImageView(pauseButtonImage);
 				return pauseView;
 			}
 			
@@ -56,7 +63,7 @@ public class Button_Builder {
 			{
 				File file3 = new File("icons/right.png");
 				Image forwardButtonImage = new Image(file3.toURI().toString());
-				ImageView forwardView = new ImageView(forwardButtonImage);
+				forwardView = new ImageView(forwardButtonImage);
 				return forwardView;
 			}
 			
@@ -67,7 +74,7 @@ public class Button_Builder {
 			{
 				File file4 = new File("icons/left.png");
 				Image backwardButtonImage = new Image(file4.toURI().toString());
-				ImageView backwardView = new ImageView(backwardButtonImage);
+				backwardView = new ImageView(backwardButtonImage);
 				return backwardView;
 			}
 			
@@ -78,7 +85,7 @@ public class Button_Builder {
 			{
 				File file5 = new File("icons/stop.png");
 				Image stopButtonImage = new Image(file5.toURI().toString());
-				ImageView stopView = new ImageView(stopButtonImage);
+				stopView = new ImageView(stopButtonImage);
 				return stopView;
 			}
 			
@@ -89,7 +96,7 @@ public class Button_Builder {
 			{
 				File file7 = new File("icons/repeat.png");
 				Image reloadButtonImage = new Image(file7.toURI().toString());
-				ImageView reloadView = new ImageView(reloadButtonImage);
+				reloadView = new ImageView(reloadButtonImage);
 				return reloadView;
 			}
 			
@@ -100,7 +107,7 @@ public class Button_Builder {
 			{
 				File file7 = new File("icons/shulff.png");
 				Image randomButtonImage = new Image(file7.toURI().toString());
-				ImageView random = new ImageView(randomButtonImage);
+				random = new ImageView(randomButtonImage);
 				return random;
 			}
 			
@@ -278,5 +285,107 @@ public class Button_Builder {
 						Main.positionSlider.setValue(0);
 						m.seek(m.getStartTime());						
 				    
+			}
+			/**
+			 * @return the name
+			 */
+			public String getName() {
+				return name;
+			}
+			/**
+			 * @return the playView
+			 */
+			public ImageView getPlayView() {
+				return playView;
+			}
+			/**
+			 * @return the pauseView
+			 */
+			public ImageView getPauseView() {
+				return pauseView;
+			}
+			/**
+			 * @return the forwardView
+			 */
+			public ImageView getForwardView() {
+				return forwardView;
+			}
+			/**
+			 * @return the backwardView
+			 */
+			public ImageView getBackwardView() {
+				return backwardView;
+			}
+			/**
+			 * @return the stopView
+			 */
+			public ImageView getStopView() {
+				return stopView;
+			}
+			/**
+			 * @return the reloadView
+			 */
+			public ImageView getReloadView() {
+				return reloadView;
+			}
+			/**
+			 * @return the random
+			 */
+			public ImageView getRandom() {
+				return random;
+			}
+			/**
+			 * @param media the media to set
+			 */
+			public void setMedia(Media media) {
+				this.media = media;
+			}
+			/**
+			 * @param name the name to set
+			 */
+			public void setName(String name) {
+				this.name = name;
+			}
+			/**
+			 * @param playView the playView to set
+			 */
+			public void setPlayView(ImageView playView) {
+				this.playView = playView;
+			}
+			/**
+			 * @param pauseView the pauseView to set
+			 */
+			public void setPauseView(ImageView pauseView) {
+				this.pauseView = pauseView;
+			}
+			/**
+			 * @param forwardView the forwardView to set
+			 */
+			public void setForwardView(ImageView forwardView) {
+				this.forwardView = forwardView;
+			}
+			/**
+			 * @param backwardView the backwardView to set
+			 */
+			public void setBackwardView(ImageView backwardView) {
+				this.backwardView = backwardView;
+			}
+			/**
+			 * @param stopView the stopView to set
+			 */
+			public void setStopView(ImageView stopView) {
+				this.stopView = stopView;
+			}
+			/**
+			 * @param reloadView the reloadView to set
+			 */
+			public void setReloadView(ImageView reloadView) {
+				this.reloadView = reloadView;
+			}
+			/**
+			 * @param random the random to set
+			 */
+			public void setRandom(ImageView random) {
+				this.random = random;
 			}
 }
